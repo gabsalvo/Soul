@@ -36,12 +36,12 @@ export class HomeCommandComponent {
   // Execute Login when A and D are both pressed
   @HostListener('window:keydown', ['$event'])
   onKeyDown(event: KeyboardEvent) {
-    this.commandListener.handleKeyDown(event.key);
+    this.commandListener.handleADKeyDown(event.key);
   }
 
   @HostListener('window:keyup', ['$event'])
   onKeyUp(event: KeyboardEvent) {
-    this.commandListener.handleKeyUp(event.key);
+    this.commandListener.handleADKeyUp(event.key);
   }
 
 }

@@ -15,7 +15,7 @@ export class CommandListenerService {
 
   constructor(private router: Router) { }
 
-  handleKeyDown(key: string) {
+  handleADKeyDown(key: string) {
     if (key.toLowerCase() === 'a') {
       this.aKeyPressed = true;
     } else if (key.toLowerCase() === 'd') {
@@ -24,7 +24,7 @@ export class CommandListenerService {
     this.checkKeysAndExecuteCommand();
   }
 
-  handleKeyUp(key: string) {
+  handleADKeyUp(key: string) {
     if (key.toLowerCase() === 'a') {
       this.aKeyPressed = false;
     } else if (key.toLowerCase() === 'd') {
