@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { SoundService } from './sound.service';
 
-describe('PianoService', () => {
+describe('SoundService', () => {
   let service: SoundService;
 
   beforeEach(() => {

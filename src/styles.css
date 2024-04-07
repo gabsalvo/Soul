@@ -5,6 +5,7 @@
 body {
   background: #020918;
   font-family: 'Pixelify Sans', sans-serif;
+  overflow-y: hidden;
 }
 
 

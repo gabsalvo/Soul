@@ -10,8 +10,11 @@ import { Router } from '@angular/router';
 export class CommandListenerService {
   private aKeyPressed = false;
   private dKeyPressed = false;
+  private hKeyPressed = false;
   private commandPressedSource = new Subject<void>();
   commandPressed$ = this.commandPressedSource.asObservable();
+  private hKeyPressSource = new Subject<boolean>();
+  hKeyPressed$ = this.hKeyPressSource.asObservable();
 
   constructor(private router: Router) { }
 
@@ -21,7 +24,7 @@ export class CommandListenerService {
     } else if (key.toLowerCase() === 'd') {
       this.dKeyPressed = true;
     }
-    this.checkKeysAndExecuteCommand();
+    this.checkKeysADAndExecuteCommand();
   }
 
   handleADKeyUp(key: string) {
@@ -32,9 +35,28 @@ export class CommandListenerService {
     }
   }
 
-  private checkKeysAndExecuteCommand() {
+  handleHKeyDown(key: string) {
+    if (key.toLowerCase() === 'h') {
+      this.hKeyPressed = true;
+    }
+    this.checkKeysHAndExecuteCommand();
+  }
+
+  handleHKeyUp(key: string) {
+   if (key.toLowerCase() === 'h') {
+      this.hKeyPressed = false;
+    }
+  }
+
+  private checkKeysADAndExecuteCommand() {
     if (this.aKeyPressed && this.dKeyPressed) {
       this.executeLoginCommand().then(r => {return true});
+    }
+  }
+  private checkKeysHAndExecuteCommand() {
+    this.hKeyPressSource.next(this.hKeyPressed);
+    if (this.hKeyPressed) {
+      this.executeLevelCommand();
     }
   }
 
@@ -56,6 +78,10 @@ export class CommandListenerService {
     // Resetta lo stato dei tasti in ogni caso
     this.aKeyPressed = false;
     this.dKeyPressed = false;
+  }
+
+  private executeLevelCommand() {
+    console.log("h has been pressed");
   }
 
 }

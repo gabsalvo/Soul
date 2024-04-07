@@ -10,7 +10,7 @@ export class SoundService {
 
   constructor() {
     this.loadSounds('piano', ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4', 'C5']);
-    //this.loadSounds('spells', ['fire', 'earth', 'water', 'air']);
+    this.loadSounds('spells', ['Fire', 'Earth', 'Water', 'Air']);
   }
 
   loadSounds(category: string, notes: string[]) {

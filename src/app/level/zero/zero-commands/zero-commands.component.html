@@ -1,6 +1,8 @@
 <!-- command.component.html -->
 <div class="flex justify-center items-end pb-8 lg:pb-16 w-full">
-  <div class="command-card bg-black bg-opacity-50 w-80 md:w-96 lg:w-1/3 xl:w-1/4 h-32 md:h-40 border-2 border-amber-400 rounded-lg shadow-lg flex flex-col justify-center items-center">
+
+  <!-- Original content, shown when showCommands is false -->
+  <div *ngIf="!showCommands" class="command-card bg-black bg-opacity-50 w-80 md:w-96 lg:w-1/3 xl:w-1/4 h-32 md:h-40 border-2 border-amber-400 rounded-lg shadow-lg flex flex-col justify-center items-center">
     <p class="text-amber-100 font-pixel text-center text-xl md:text-2xl mb-2">
       Level 0
     </p>
@@ -8,4 +10,39 @@
       Press: "<span class="text-orange-300">H</span>"
     </p>
   </div>
+
+    <!-- Expanded content, shown when showCommands is true -->
+    <div *ngIf="showCommands" class="command-card-expanded bg-black bg-opacity-50 w-80 md:w-96 lg:w-1/3 xl:w-1/4 h-auto border-2 border-amber-400 rounded-lg shadow-lg">
+      <div class="flex justify-between items-center w-full p-4">
+        <!-- Left column for Actions -->
+        <div class="actions flex flex-col items-center w-1/2">
+          <div class="title text-amber-100 font-pixel text-center text-xl mb-4">Actions</div>
+          <button class="melee-button text-white bg-rose-700 py-2 px-4 rounded mb-4 active:bg-rose-900 focus:outline-none">Melee</button>
+          <div class="arrow-keys grid grid-rows-2 grid-cols-3 gap-2">
+            <div></div>
+            <button class="arrow-button text-white bg-gray-600 py-1 px-3 m-1 rotate-upward focus:outline-none active:bg-gray-700">&lt;</button>
+            <div></div>
+            <button class="arrow-button text-white bg-gray-600 py-1 px-3 m-1 focus:outline-none active:bg-gray-700">&lt;</button>
+            <div></div>
+            <button class="arrow-button text-white bg-gray-600 py-1 px-3 m-1 focus:outline-none active:bg-gray-700">&gt;</button>
+          </div>
+        </div>
+        <!-- Vertical divider -->
+        <div class="divider bg-amber-400 w-px h-full mx-2"></div>
+        <!-- Right column for Spells -->
+        <div class="spells flex flex-col items-center w-1/2">
+          <div class="title text-amber-100 font-pixel text-center text-xl mb-4">Spells:</div>
+          <div class="spell-instructions text-white mb-4">
+            <p class="mb-1">F: Fire</p>
+            <p class="mb-1">A: Air</p>
+            <p class="mb-1">E: Earth</p>
+            <p class="mb-1">W: Water</p>
+          </div>
+          <div class="mana-bar w-full bg-gray-300 h-4 rounded relative">
+            <div class="mana-fill bg-emerald-900 h-4 rounded" [style.width]="currentMana + '%'"></div>
+            <p class="absolute inset-0 text-center text-white flex items-center justify-center">{{ currentMana }} / {{ maxMana }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
 </div>
