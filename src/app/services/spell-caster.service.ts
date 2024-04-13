@@ -23,4 +23,14 @@ export class SpellCasterService {
       return false; // Not enough mana to cast the spell
     }
   }
+  useMana(manaCost: number) {
+    // Supponendo che il servizio tenga traccia del mana corrente
+    let currentMana = this._currentMana.getValue();
+    if (currentMana >= manaCost) {
+      this._currentMana.next(currentMana - manaCost);
+    } else {
+      console.log("Not enough mana");
+      // Gestisci la situazione in cui il mana non è sufficiente
+    }
+  }
 }
