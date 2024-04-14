@@ -3,6 +3,7 @@ import { SoundService } from "../../../services/sound.service";
 import { CommandListenerService } from "../../../services/command-listener.service";
 import { SpellCasterService } from "../../../services/spell-caster.service";
 import { Subscription } from 'rxjs';
+import {LostService} from "../../../services/lost.service";
 import { NgClass, NgIf } from "@angular/common";
 
 @Component({
@@ -19,11 +20,14 @@ export class ZeroCommandsComponent implements OnInit, OnDestroy {
   currentMana: number | undefined;
   showCommands = false; // Tracks whether combat mode is enabled
   private manaSubscription!: Subscription;
+  insufficientMana = false;
+  private insufficientManaTimeout?: any;
 
   constructor(
     private soundService: SoundService,
     private commandListener: CommandListenerService,
-    private spellCaster: SpellCasterService
+    private spellCaster: SpellCasterService,
+    private lostService: LostService,
   ) {}
 
   @HostListener('document:keydown', ['$event'])
@@ -51,29 +55,29 @@ export class ZeroCommandsComponent implements OnInit, OnDestroy {
         const canCast = this.spellCaster.castSpell(spell.manaCost);
         if (canCast) {
           this.soundService.playNote(spell.note);
+        } else {
+          this.flashInsufficientMana();
         }
       }
     }
   }
-
   onMeleeAttack(manaCost: number) {
     // Controlla se c'è abbastanza mana per l'attacco melee
     if (this.currentMana !== undefined && this.currentMana >= manaCost) {
       this.currentMana -= manaCost; // Riduce il mana
-      // Potresti voler riprodurre un suono o eseguire altre azioni qui
-
-      // Aggiorna il mana anche nel servizio se il mana è gestito centralmente
-      this.spellCaster.useMana(manaCost);
+      this.spellCaster.castSpell(manaCost); // Aggiorna il mana nel servizio
+      // Qui potresti voler riprodurre un suono o eseguire altre azioni di successo
     } else {
+      this.lostService.handleManaDepletion();
       console.log("Not enough mana for melee attack");
-      // Gestisci la situazione in cui il mana non è sufficiente
+      this.flashInsufficientMana(); // Attiva il feedback visivo di mana insufficiente
     }
   }
 
-  onBlock() {
-    // Logica per bloccare o difendere
-    console.log('Block action initiated');
-    // Qui puoi aggiungere qualsiasi logica di gioco necessaria per l'azione di blocco
+  flashInsufficientMana(): void {
+    this.insufficientMana = true;
+    clearTimeout(this.insufficientManaTimeout); // Clear any existing timeout
+    this.insufficientManaTimeout = setTimeout(() => this.insufficientMana = false, 250); // Reset after 1 second
   }
 
   ngOnInit(): void {
@@ -86,6 +90,7 @@ export class ZeroCommandsComponent implements OnInit, OnDestroy {
     if (this.manaSubscription) {
       this.manaSubscription.unsubscribe();
     }
+    clearTimeout(this.insufficientManaTimeout);
   }
 
   get maxMana() {

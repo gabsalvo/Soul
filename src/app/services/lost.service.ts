@@ -14,15 +14,15 @@ export class LostService {
   }
 
   private monitorMana(): void {
-    this.manaSubscription = this.spellCasterService.currentMana$.subscribe(mana => {
-      if (mana === 0) {
+    this.manaSubscription = this.spellCasterService.noMana$.subscribe(mana => {
+      if (mana) {
         this.handleManaDepletion();
       }
     });
   }
 
-  private handleManaDepletion(): void {
-    console.log('Mana has reached zero! Lost service activated.');
+  public handleManaDepletion(): void {
+    console.log('Attempted to cast a spell with no mana left. Lost service activated');
     this.showLostOverlay();
   }
 

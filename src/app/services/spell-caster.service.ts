@@ -10,27 +10,27 @@ export class SpellCasterService {
   private _currentMana = new BehaviorSubject<number>(this._maxMana);
   currentMana$ = this._currentMana.asObservable();
 
+  private _noManaSource = new BehaviorSubject<boolean>(false);
+  noMana$ = this._noManaSource.asObservable();
+
+
   constructor() { }
 
   castSpell(manaCost: number): boolean {
     const currentMana = this._currentMana.getValue();
-    if (currentMana - manaCost >= 0) {
-      this._currentMana.next(currentMana - manaCost);
-      console.log("Spell casted")
-      return true; // Spell was successfully cast
+    // Modifica qui: Verifica se il mana è già a zero prima di tentare di eseguire un'azione.
+    if (currentMana === 0) {
+      this._noManaSource.next(true); // Emetti un evento di mana esaurito se il mana è a zero
+      console.log("Cannot cast spell, no mana left!");
+      return false;
+    } else if (currentMana - manaCost < 0) {
+      // Solo un log qui, non emettiamo l'evento di mana esaurito
+      console.log("Not enough mana to cast the spell!");
+      return false;
     } else {
-      console.log("Not enough mana!");
-      return false; // Not enough mana to cast the spell
-    }
-  }
-  useMana(manaCost: number) {
-    // Supponendo che il servizio tenga traccia del mana corrente
-    let currentMana = this._currentMana.getValue();
-    if (currentMana >= manaCost) {
       this._currentMana.next(currentMana - manaCost);
-    } else {
-      console.log("Not enough mana");
-      // Gestisci la situazione in cui il mana non è sufficiente
+      console.log("Spell casted");
+      return true;
     }
   }
 }

@@ -17,7 +17,7 @@
         <!-- Left column for Actions -->
         <div class="actions flex flex-col items-center w-1/2">
           <div class="title text-amber-100 font-pixel text-center text-xl mb-4">Actions</div>
-          <button (click)="onMeleeAttack(5)" class="melee-button text-white bg-rose-700 py-2 px-4 rounded mb-4 active:bg-rose-900 focus:outline-none">Melee (5)</button>
+          <button (click)="onMeleeAttack(5)" [ngClass]="{'bg-red-500': insufficientMana, 'bg-rose-700': !insufficientMana}" class="melee-button text-white bg-rose-700 py-2 px-4 rounded mb-4 active:bg-rose-900 focus:outline-none">Melee (5)</button>
           <div class="arrow-keys grid grid-rows-2 grid-cols-3 gap-2">
             <div></div>
             <button class="arrow-button text-white bg-gray-600 py-1 px-3 m-1 rotate-90 focus:outline-none active:bg-gray-700">&lt;</button>
@@ -33,10 +33,10 @@
         <div class="spells flex flex-col items-center w-1/2">
           <div class="title text-amber-100 font-pixel text-center text-xl mb-4">Spells:</div>
           <div class="spell-instructions text-white mb-4">
-            <p class="mb-1">A: Air (10)</p>
-            <p class="mb-1">E: Earth (15)</p>
-            <p class="mb-1">F: Fire (20)</p>
-            <p class="mb-1">W: Water (25)</p>
+            <p  [ngClass]="{'text-red-500': insufficientMana}" class="mb-1">A: Air (10)</p>
+            <p  [ngClass]="{'text-red-500': insufficientMana}" class="mb-1">E: Earth (15)</p>
+            <p  [ngClass]="{'text-red-500': insufficientMana}" class="mb-1">F: Fire (20)</p>
+            <p  [ngClass]="{'text-red-500': insufficientMana}" class="mb-1">W: Water (25)</p>
           </div>
           <div class="mana-bar w-full bg-gray-300 h-4 rounded relative">
             <div class="mana-fill bg-emerald-900 h-4 rounded" [style.width]="currentMana + '%'"></div>
